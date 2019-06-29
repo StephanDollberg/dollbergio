@@ -26,6 +26,7 @@ def post():
         return "Oooh no meme"
 
     text = request.form['text']
+    text = text[:100]
 
     if text == '':
         return '', 400
