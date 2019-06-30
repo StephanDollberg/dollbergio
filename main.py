@@ -32,7 +32,7 @@ def post():
     text = request.form['text']
     text = text[:100]
 
-    if text == '':
+    if text == '' or not text.isprintable():
         return '', 400
 
     hash = hashlib.sha256(text.encode('utf-8')).hexdigest()
