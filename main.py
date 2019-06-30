@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory, Response
+from flask import Flask, request, send_from_directory, Response, render_template
 import subprocess
 import hashlib
 import os
@@ -54,53 +54,4 @@ def home():
 def root(path):
     img = path if path != '' else 'raw'
 
-    # webscale inline Vanilla-JS
-
-    return '''<html style="display: table;margin: auto;">
-<body style="display: table-cell;vertical-align: middle;">
-
-<img id="thememe" src="/memes/XXXXX.jpg" height="788px" width="788px">
-
-<form action="#" >
-    <br>
-        <input id="text" type="text" name="text" value="" onkeypress="keypress(event)" />
-        <button type="button" onclick="return submitform();">Meme it!</button> 
-    </br>
-</form> 
-
-<script type="text/javascript">
-
-function keypress(event)
-{
-    if(event.keyCode === 13){
-        event.preventDefault();
-        submitform();
-    }
-
-    return false;
-}
-
-function submitform()
-{
-    var text = document.getElementById('text').value;
-    var r = new XMLHttpRequest();
-    r.open("POST", "/post", true);
-    r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    r.onreadystatechange = function () {
-        if (r.readyState != 4 || r.status != 200) {
-            console.log("fail");
-            return;
-        }
-
-        document.getElementById("thememe").src= "/memes/" + r.responseText + ".jpg";
-        window.history.pushState(null, null, "/v/" + r.responseText);
-    };
-    r.send("text="+text);
-
-    return false;
-}
-</script>
-
-
-</body>
-</html>'''.replace('XXXXX', img)
+    return render_template('base.html', imghash=img)
