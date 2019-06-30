@@ -3,7 +3,9 @@ import subprocess
 import hashlib
 import os
 
+
 app = Flask(__name__, static_url_path='')
+
 
 def render(text, hash):
     if os.path.exists(os.path.join('memes', hash)):
@@ -15,9 +17,11 @@ def render(text, hash):
         'caption:'+text, '-composite', os.path.join('memes', hash)],
         timeout=1)
 
+
 @app.route('/memes/<path:path>')
 def send_memes(path):
     return send_from_directory('memes', path)
+
 
 @app.route("/post", methods=['POST'])
 def post():
@@ -38,6 +42,7 @@ def post():
 
     return hash
 
+
 @app.route("/robots.txt")
 def robots():
     txt = '''User-agent: *
@@ -46,10 +51,12 @@ Disallow: /
 
     return Response(txt, mimetype="text/plain")
 
+
 @app.route("/")
 def home():
     return root('')
-    
+
+
 @app.route("/v/<path:path>")
 def root(path):
     img = path if path != '' else 'raw'
