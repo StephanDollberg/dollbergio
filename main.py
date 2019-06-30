@@ -32,8 +32,9 @@ def post():
         return '', 400
 
     hash = hashlib.sha256(text.encode('utf-8')).hexdigest()
+    filename = hash + ".jpg"
 
-    render(text, hash)
+    render(text, filename)
 
     return hash
 
@@ -51,14 +52,14 @@ def home():
     
 @app.route("/v/<path:path>")
 def root(path):
-    img = path if path != '' else 'raw.jpg'
+    img = path if path != '' else 'raw'
 
     # webscale inline Vanilla-JS
 
     return '''<html style="display: table;margin: auto;">
 <body style="display: table-cell;vertical-align: middle;">
 
-<img id="thememe" src="/memes/XXXXX" height="788px" width="788px">
+<img id="thememe" src="/memes/XXXXX.jpg" height="788px" width="788px">
 
 <form action="#" >
     <br>
@@ -91,7 +92,7 @@ function submitform()
             return;
         }
 
-        document.getElementById("thememe").src="/memes/"+r.responseText;
+        document.getElementById("thememe").src= "/memes/" + r.responseText + ".jpg";
         window.history.pushState(null, null, "/v/" + r.responseText);
     };
     r.send("text="+text);
