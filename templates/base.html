@@ -1,7 +1,9 @@
 <html style="display: table;margin: auto;">
+{% if imghash != 'raw' %}
 <head>
     <meta property="og:image" content="/memes/{{ imghash }}.jpg">
 </head>
+{% endif %}
 <body style="display: table-cell;vertical-align: middle;">
 
 <img style="display: block;  margin-left: auto; margin-right: auto;"
