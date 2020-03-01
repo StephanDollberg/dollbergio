@@ -1,0 +1,20 @@
+[package]
+name = "dollbergio"
+version = "0.1.0"
+authors = ["Stephan Dollberg <stephan.dollberg@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "2.0"
+actix-rt = "1.0"
+sha2 = "0.8.*"
+serde = "1.0.*"
+tokio = { version = "0.2.13", features = ["process", "time"] }
+askama = "0.8"
+futures = "0.3.4"
+actix-files = "0.2.1"
+hex = "0.4.2"
+log = "0.4.8"
+env_logger = "0.7.1"
