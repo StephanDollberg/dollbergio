@@ -54,15 +54,15 @@ async fn post(mut form: web::Form<PostData>) -> impl Responder {
     }
 
     let mut sha_builder = sha2::Sha256::new();
-    sha_builder.input(form.text.as_bytes());
-    let hash = hex::encode(sha_builder.result().as_slice());
+    sha_builder.update(form.text.as_bytes());
+    let hash = hex::encode(sha_builder.finalize().as_slice());
 
     let path = std::path::Path::new("memes").join(hash.to_owned() + ".jpg");
     if path.exists() {
-        return HttpResponse::Ok().body(&hash);
+        return HttpResponse::Ok().body(hash);
     }
 
-    let make_meme_fut = Command::new("convert").arg("memes/raw.jpg")
+    let mut make_meme_fut = Command::new("convert").arg("memes/raw.jpg")
         .arg("-font").arg("Impact")
         .arg("-fill").arg("white")
         .arg("-stroke").arg("black")
@@ -77,11 +77,11 @@ async fn post(mut form: web::Form<PostData>) -> impl Responder {
         .spawn()
         .expect("Oooo no meme :(");
 
-    if let Err(_) = timeout(Duration::from_secs(1), make_meme_fut).await {
+    if let Err(_) = timeout(Duration::from_secs(1), make_meme_fut.wait()).await {
         return HttpResponse::Ok().body("welp too slow");
     }
 
-    return HttpResponse::Ok().body(&hash);
+    return HttpResponse::Ok().body(hash);
 }
 
 #[actix_rt::main]
